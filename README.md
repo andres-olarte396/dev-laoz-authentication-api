@@ -62,20 +62,6 @@ La API de Autenticación permite gestionar la autenticación de usuarios, asigna
 
 ### 🔑 **Autenticación**
 
-- **`POST /api/auth/register`**
-
-  Registra un nuevo usuario.  
-  **Body:**
-
-  ```json
-  {
-    "username": "testuser",
-    "password": "password123",
-    "role": "user",
-    "permissions": ["read", "write"]
-  }
-  ```
-
 - **`POST /api/auth/login`**
 
   Inicia sesión con credenciales de usuario y devuelve un token JWT.
@@ -95,38 +81,6 @@ La API de Autenticación permite gestionar la autenticación de usuarios, asigna
   {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
-  ```
-
-### 🔒 **Rutas Protegidas (Requieren JWT)**
-
-- **`GET /api/auth/read`**
-
-  Accede a un recurso protegido.
-  
-  **Headers:**
-
-  ```plaintext
-  Authorization: Bearer <token>
-  ```
-
-- **`POST /api/auth/write`**
-
-  Requiere el permiso `write`.
-
-  **Headers:**
-
-  ```plaintext
-  Authorization: Bearer <token>
-  ```
-
-- **`DELETE /api/auth/delete`**
-
-  Requiere el permiso `delete`.
-
-  **Headers:**
-
-  ```plaintext
-  Authorization: Bearer <token>
   ```
 
 ---
