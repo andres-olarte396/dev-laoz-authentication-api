@@ -9,8 +9,10 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use('/api/auth', authRoutes);
 
 swaggerDocs(app);
