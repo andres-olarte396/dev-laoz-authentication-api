@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# VSCode
+.vscode/
+
+# Others
+*.swp
+*.swo
+
+# Build
+build/
+dist/
+
+# SonarQube
+.sonarqube/
+
+# Local data
+*.local
+
+# IDEs
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/

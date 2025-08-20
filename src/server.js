@@ -5,8 +5,11 @@ const authRoutes = require('./routes/authRoutes');
 const swaggerDocs = require('./config/swagger');
 const bodyParser = require('body-parser');
 
+
 dotenv.config();
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 const app = express();
 
@@ -17,7 +20,12 @@ app.use('/api/auth', authRoutes);
 
 swaggerDocs(app);
 
+
 const PORT = process.env.LOCAL_PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Authentication API running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Authentication API running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
