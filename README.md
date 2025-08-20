@@ -83,6 +83,31 @@ La API de Autenticación permite gestionar la autenticación de usuarios, asigna
   }
   ```
 
+- **`POST /api/auth/refresh`**
+
+  Permite obtener un nuevo access token usando un refresh token válido.
+
+  **Body:**
+
+  ```json
+  {
+    "refreshToken": "<refresh_token_válido>"
+  }
+  ```
+
+  **Respuesta exitosa:**
+
+  ```json
+  {
+    "token": "<nuevo_access_token>"
+  }
+  ```
+  
+  **Errores posibles:**
+
+  - 400: Falta el refresh token `{ "error": "Refresh token requerido" }`
+  - 401: Token inválido o expirado `{ "error": "Refresh token inválido o expirado" }`
+
 ---
 
 ## 👨‍💻 **Desarrollo**
@@ -155,6 +180,16 @@ curl -X GET http://localhost:4000/api/auth/read \
 -H "Authorization: Bearer <token>"
 ```
 
+### **Refresh Token**
+
+```bash
+curl -X POST http://localhost:4000/api/auth/refresh \
+-H "Content-Type: application/json" \
+-d '{
+  "refreshToken": "<refresh_token_válido>"
+}'
+```
+
 ---
 
 ## 🪧 **Tecnologías Utilizadas**
@@ -176,3 +211,55 @@ Si deseas contribuir a este proyecto, realiza un fork del repositorio, haz tus c
 ## 📜 **Licencia**
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+---
+
+## 🔄 Endpoint de Refresh Token
+
+- **`POST /api/auth/refresh`**
+
+  Permite obtener un nuevo access token usando un refresh token válido.
+
+  **Body:**
+
+  ```json
+  {
+    "refreshToken": "<refresh_token_válido>"
+  }
+  ```
+
+  **Respuesta exitosa:**
+
+  ```json
+  {
+    "token": "<nuevo_access_token>"
+  }
+  ```
+  
+  **Errores posibles:**
+
+  - 400: Falta el refresh token `{ "error": "Refresh token requerido" }`
+  - 401: Token inválido o expirado `{ "error": "Refresh token inválido o expirado" }`
+
+---
+
+## 🛡️ Mejoras de Seguridad y Calidad
+
+- Validación de datos de entrada con `express-validator` en los endpoints.
+- Límite de intentos de login por IP (rate limit) para evitar ataques de fuerza bruta.
+- El JWT ahora contiene el `userId` y el `sessionToken` como claims.
+- Se implementa refresh token para sesiones seguras y renovables.
+- Pruebas automáticas robustas para login y refresh token.
+
+---
+
+## 🧪 Pruebas Automáticas
+
+El proyecto incluye pruebas con Jest y Supertest para los endpoints principales:
+- Login exitoso, credenciales inválidas y datos incompletos.
+- Refresh token válido, inválido y ausente.
+
+Para ejecutar los tests:
+```bash
+npm test
+```
