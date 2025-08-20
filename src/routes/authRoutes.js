@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { loginUser, refreshTokenController } = require('../controllers/authController');
+const { loginUser, refreshTokenController, logoutController } = require('../controllers/authController');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 
@@ -34,7 +34,6 @@ const loginLimiter = rateLimit({
  *       500:
  *         description: Error del servidor
  */
-
 router.post(
 	'/login',
 	loginLimiter,
@@ -51,7 +50,6 @@ router.post(
 		},
 	loginUser
 );
-
 
 /**
  * @swagger
@@ -77,5 +75,30 @@ router.post(
  *         description: Refresh token requerido
  */
 router.post('/refresh', refreshTokenController);
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Cierra la sesión del usuario e invalida el refresh token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Sesión cerrada correctamente
+ *       401:
+ *         description: Refresh token inválido o sesión ya cerrada
+ *       400:
+ *         description: Refresh token requerido
+ */
+router.post('/logout', logoutController);
 
 module.exports = router;

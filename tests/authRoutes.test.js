@@ -2,6 +2,7 @@
 const request = require('supertest');
 const app = require('../src/server');
 
+// Mock de los controladores para evitar dependencias externas
 jest.mock('../src/controllers/authController', () => ({
   loginUser: (req, res) => {
     const { username, password } = req.body;
@@ -25,6 +26,7 @@ jest.mock('../src/controllers/authController', () => ({
   }
 }));
 
+// Pruebas para el endpoint /api/auth/login
 describe('POST /api/auth/login', () => {
   it('debería responder 200 si el login es exitoso', async () => {
     const res = await request(app)
@@ -73,6 +75,33 @@ describe('POST /api/auth/refresh', () => {
   it('debería responder 401 si el refreshToken es inválido', async () => {
     const res = await request(app)
       .post('/api/auth/refresh')
+      .send({ refreshToken: 'token-invalido' });
+    expect(res.statusCode).toBe(401);
+    expect(res.body).toHaveProperty('error');
+  });
+});
+
+// Pruebas para el endpoint /api/auth/logout
+describe('POST /api/auth/logout', () => {
+  it('debería responder 200 si la sesión se cierra correctamente', async () => {
+    const res = await request(app)
+      .post('/api/auth/logout')
+      .send({ refreshToken: 'mocked-refresh-token' });
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('message', 'Sesión cerrada correctamente');
+  });
+
+  it('debería responder 400 si falta el refreshToken', async () => {
+    const res = await request(app)
+      .post('/api/auth/logout')
+      .send({});
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty('error', 'Refresh token requerido');
+  });
+
+  it('debería responder 401 si el refreshToken es inválido', async () => {
+    const res = await request(app)
+      .post('/api/auth/logout')
       .send({ refreshToken: 'token-invalido' });
     expect(res.statusCode).toBe(401);
     expect(res.body).toHaveProperty('error');

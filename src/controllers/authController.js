@@ -56,7 +56,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 // Controlador para refresh token
 const refreshTokenController = async (req, res) => {
   const { refreshToken } = req.body;
@@ -79,6 +78,30 @@ const refreshTokenController = async (req, res) => {
     );
     return res.status(200).json({ token: accessToken });
   } catch (error) {
+    console.error('Error in logoutController:', error);
+    return res.status(401).json({ error: 'Refresh token inválido o expirado' });
+  }
+};
+
+// Controlador para cerrar sesión
+const logoutController = async (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({ error: 'Refresh token requerido' });
+  }
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    // Buscar y desactivar la sesión
+    const session = await Session.findOneAndUpdate(
+      { sessionToken: decoded.sessionToken, userId: decoded.userId, isActive: true },
+      { isActive: false }
+    );
+    if (!session) {
+      return res.status(401).json({ error: 'Refresh token inválido o sesión ya cerrada' });
+    }
+    return res.status(200).json({ message: 'Sesión cerrada correctamente' });
+  } catch (error) {
+    console.error('Error in logoutController:', error);
     return res.status(401).json({ error: 'Refresh token inválido o expirado' });
   }
 };
@@ -86,4 +109,5 @@ const refreshTokenController = async (req, res) => {
 module.exports = {
   loginUser,
   refreshTokenController,
+  logoutController,
 };
