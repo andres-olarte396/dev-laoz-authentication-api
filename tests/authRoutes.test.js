@@ -23,6 +23,16 @@ jest.mock('../src/controllers/authController', () => ({
       return res.status(200).json({ token: 'nuevo-access-token' });
     }
     return res.status(401).json({ error: 'Refresh token inválido o expirado' });
+  },
+  logoutController: (req, res) => {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(400).json({ error: 'Refresh token requerido' });
+    }
+    if (refreshToken === 'mocked-refresh-token') {
+      return res.status(200).json({ message: 'Sesión cerrada correctamente' });
+    }
+    return res.status(401).json({ error: 'Refresh token inválido o sesión ya cerrada' });
   }
 }));
 
