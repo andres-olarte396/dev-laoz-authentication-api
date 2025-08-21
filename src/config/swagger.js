@@ -8,7 +8,7 @@ const options = {
     info: {
       title: 'Auth API',
       version: process.env.API_VERSION || '1.0.0',
-      description: 'API para autenticación.\n\n**Novedades v2.0.0:**\n- Endpoints CRUD completos para usuarios (/api/user)\n- Validaciones robustas en todos los endpoints\n- Documentación Swagger mejorada',
+      description: 'API para autenticación.\n\n**Novedades v2.0.0:**\n- Validaciones robustas en todos los endpoints\n- Documentación Swagger mejorada',
       contact: {
         name: 'Andres Olarte',
         url: 'https://github.com/andres-olarte396',
