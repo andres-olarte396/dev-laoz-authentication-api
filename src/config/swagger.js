@@ -44,18 +44,7 @@ const options = {
             password: {
               type: 'string',
               example: 'password123',
-            },
-            role: {
-              type: 'string',
-              example: 'user',
-              description: 'Rol del usuario (opcional en login)',
-            },
-            permissions: {
-              type: 'array',
-              items: { type: 'string' },
-              example: ['read'],
-              description: 'Permisos del usuario (opcional en login)',
-            },
+            }
           },
         },
       },
