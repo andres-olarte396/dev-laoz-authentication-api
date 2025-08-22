@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const Session = require('../models/Session');
-const User = require('../models/User'); 
+const User = require('../models/User');
 
 
 // Genera access token y refresh token
@@ -33,9 +33,9 @@ const loginUser = async (req, res) => {
     // Generar un token único para la sesión
     const sessionToken = crypto.randomBytes(64).toString("hex");
 
-    // Definir la caducidad de la sesión (por ejemplo, 1 hora)
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
-
+    // Definir la caducidad de la sesión (por ejemplo, 1 hora) en UTC
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+ 
     // Crear y guardar la sesión en la base de datos
     const session = new Session({
       sessionToken,
@@ -88,6 +88,10 @@ const logoutController = async (req, res) => {
   const { refreshToken } = req.body;
   if (!refreshToken) {
     return res.status(400).json({ error: 'Refresh token requerido' });
+  }
+  // Validar formato JWT (tres partes separadas por punto)
+  if (typeof refreshToken !== 'string' || refreshToken.split('.').length !== 3) {
+    return res.status(400).json({ error: 'Refresh token con formato inválido' });
   }
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);

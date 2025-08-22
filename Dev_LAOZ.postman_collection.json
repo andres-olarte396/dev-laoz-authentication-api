@@ -10,7 +10,7 @@
 			"name": "Auth",
 			"item": [
 						{
-					"name": "Iniciar Sesión",
+					"name": "Iniciar Sesión (Authentication)",
 					"request": {
 						"method": "POST",
 						"header": [
